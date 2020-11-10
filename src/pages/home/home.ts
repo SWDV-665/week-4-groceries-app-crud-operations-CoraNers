@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, AlertController } from 'ionic-angular';
+import { GroceriesServiceProvider } from '../../providers/groceries-service/groceries-service';
 
 @Component({
   selector: 'page-home',
@@ -9,27 +10,12 @@ export class HomePage {
 
   title = "Grocery";
 
-  items = [
-    {
-      name: "Milk",
-      quantity: 2
-    },
-    {
-      name: "Bread",
-      quantity: 1
-    },
-    {
-      name: "Bananas",
-      quantity: 3
-    },
-    {
-      name: "Sugar",
-      quantity: 1
-    }
-  ];
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController, public dataService: GroceriesServiceProvider) {
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public alertCtrl: AlertController) {
+  }
 
+  loadItems() {
+    return this.dataService.getItems();
   }
 
   editItem(item, index) {
@@ -47,8 +33,7 @@ export class HomePage {
       duration: 3000
     });
     toast.present();
-
-    this.items.splice(index, 1);
+    this.dataService.removeItem(index);
   }
 
   addItem() {
@@ -82,7 +67,7 @@ export class HomePage {
           text: 'Save',
           handler: item => {
             console.log('Save clicked', item);
-            this.items.push(item);
+            this.dataService.addItem(item);
           }
         }
       ]
@@ -118,7 +103,7 @@ export class HomePage {
           text: 'Save',
           handler: item => {
             console.log('Save clicked', item);
-            this.items[index] = item;
+            this.dataService.editItem(item, index);
           }
         }
       ]
