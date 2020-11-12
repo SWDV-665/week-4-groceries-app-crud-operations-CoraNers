@@ -28,7 +28,8 @@ export class InputDialogServiceProvider {
         {
           name: 'quantity',
           placeholder: 'Quantity',
-          value: item? item.quantity : null
+          value: item? item.quantity : null,
+          type: "number"
         }
       ],
       buttons: [
